@@ -1,0 +1,102 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans&display=swap");
+
+html {
+    display: block;
+}
+
+body {
+    font-family: "Open Sans", sans-serif;
+    min-height: 50rem;
+}
+
+div {
+    display: block;
+}
+
+a {
+    color: #10549d;
+    text-decoration: none;
+    background-color: transparent;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.container {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+@media (min-width: 20rem) {
+    .container {
+        max-width: 600px;
+        text-align: center;
+    }
+}
+
+@media (min-width: 56rem) {
+    .container {
+        max-width: 1000px;
+        text-align: left;
+    }
+}
+
+.box-top-margin {
+    margin-top: 1rem;
+}
+
+.card {
+    border-radius: 0;
+    color: #666;
+}
+
+.card:hover {
+    border-style: dashed;
+    border-color: #adadad;
+}
+
+.media {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: start;
+    align-items: flex-start;
+}
+
+.listing-box {
+    margin-bottom: 1rem;
+}
+
+.media-body {
+    -ms-flex: 1;
+    flex: 1;
+}
+
+.post-meta {
+    font-size: 90%;
+    color: #868e96;
+}
+
+@media (min-width: 20rem) {
+    .tags {
+        float: center;
+    }
+}
+
+@media (min-width: 40rem) {
+    .tags {
+        float: right;
+    }
+}
+
+.head {
+    color: #10549d;
+    font-size: 28px;
+}
+
+.add-blog {
+    float: right;
+}
