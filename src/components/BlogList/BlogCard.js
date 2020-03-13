@@ -16,7 +16,7 @@ class BlogCard extends React.Component {
                         <div className="media listing-box">
                             <div className="media-body">
                                 <h4 className="mt-0">
-                                    <Link to={`/blogs/${blog.id}`} className="m-2">
+                                    <Link to={`/blog/${blog.id}`} className="m-2">
                                         {blog.title}
                                     </Link>
                                 </h4>

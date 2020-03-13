@@ -1,7 +1,9 @@
 import React from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-//import { Link } from "react-router-dom";
+import Interweave from 'interweave';
+
+import "./BlogList/style.css";
 
 class AddBlog extends React.Component {
 
@@ -9,6 +11,7 @@ class AddBlog extends React.Component {
         title: "",
         date: "",
         content: "",
+        tags: "",
         author: "Abderrahim BOUMAHDI"
     };
 
@@ -25,96 +28,55 @@ class AddBlog extends React.Component {
     defaultContent = {
         ops: [
             {
-                insert: "The blog title "
-            },
-            {
                 attributes: {
-                    header: 1
-                },
-                insert: "default "
-            },
-            {
-                attributes: {
+                    header: 1,
                     bold: true
                 },
-                insert: "state"
-            },
-            {
-                insert: "\nYou can write "
+                insert: "This is a Title\n"
             },
             {
                 attributes: {
+                    header: 2,
                     bold: true
                 },
-                insert: "anything "
+                insert: "This is a subtitle\n"
             },
             {
-                insert: "with "
-            },
-            {
-                attributes: {
-                    strike: true
-                },
-                insert: "different "
-            },
-            {
-                insert: "styling and "
-            },
-            {
-                attributes: {
-                    italic: true
-                },
-                insert: "all"
-            },
-            {
-                insert: "."
-            },
-            {
-                attributes: {
-                    header: 1
-                },
-                insert: "\n"
-            },
-            {
-                insert: "\nTry it for yourself !"
-            },
-            {
-                attributes: {
-                    align: "center"
-                },
-                insert: "\n"
+                attributes: {align: "justify"},
+                insert: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.\n" +
+                    "\n  "
             }
         ]
     };
 
     componentWillMount() {
-/*
-        if (typeof this.props.location.state != "undefined") {
-            console.log("updating");
-            this.setState({
-                id: this.props.match.params.id,
-                oldEditorContent: JSON.parse(this.props.location.state.oldEditorContent)
-            });
-        } else {
-            console.log("creating");
-*/
-            this.setState({ oldEditorContent: this.defaultContent });
+        /*
+                if (typeof this.props.location.state != "undefined") {
+                    console.log("updating");
+                    this.setState({
+                        id: this.props.match.params.id,
+                        oldEditorContent: JSON.parse(this.props.location.state.oldEditorContent)
+                    });
+                } else {
+                    console.log("creating");
+        */
+        this.setState({oldEditorContent: this.defaultContent});
         //}
         console.log(this.state.oldEditorContent);
     }
 
     modules = {
         toolbar: [
-            [{ header: [1, 2, false] }],
+            [{header: [1, 2, false]}],
             ["bold", "italic", "underline", "strike", "blockquote"],
             [
-                { list: "ordered" },
-                { list: "bullet" },
-                { indent: "-1" },
-                { indent: "+1" }
+                {list: "ordered"},
+                {list: "bullet"},
+                {indent: "-1"},
+                {indent: "+1"}
             ],
             ["link", "image"],
-            [{ align: [] }],
+            [{align: []}],
             ["clean"]
         ]
     };
@@ -139,11 +101,12 @@ class AddBlog extends React.Component {
         blog["title"] = "New Blog";
         blog["content"] = value;
         blog["date"] = this.getDate();
-        this.setState({ blog });
-        //console.log(editor.getContents());
+        this.setState({blog});
+        console.log(editor.getContents());
     }
 
-    saveToDB = async () => {
+    saveToDB = async event => {
+
         await fetch('http://localhost:8080/api/blog', {
             method: 'POST',
             headers: {
@@ -152,8 +115,10 @@ class AddBlog extends React.Component {
             },
             body: JSON.stringify(this.state.blog),
         });
+
+        //event.preventDefault();
         console.log(JSON.stringify(this.state.blog));
-        //this.props.history.push("/");
+        this.props.history.push("/");
     };
 
     getDate = () => {
@@ -166,22 +131,45 @@ class AddBlog extends React.Component {
         return today.toString();
     };
 
+
+    handleBlogChange = (property, value) => {
+        let blog = {...this.state.blog};
+        blog[property] = value;
+        this.setState({blog});
+    };
+
     render() {
         return (
-            <React.Fragment>
-                <ReactQuill
-                    theme="snow"
-                    defaultValue={this.state.oldEditorContent}
-                    //value={this.state.content}
-                    onChange={this.handleChange}
-                    modules={this.modules}
-                    formats={this.formats}
-                />
+            <div className="m-5 row">
+                <div className="col-md-6">
+                    <form onSubmit={this.saveToDB}
+                          className="text-center border border-light mx-auto">
 
-                <button className="btn btn-success m-2" onClick={this.saveToDB}>
-                    Publish
-                </button>
-            </React.Fragment>
+                        <input type="text" className="form-control mb-3" id="blogTitle"
+                               placeholder="Blog title"
+                               onChange={e => this.handleBlogChange("title", e.target.value)}/>
+
+                        <ReactQuill
+                            theme="snow"
+                            defaultValue={this.state.oldEditorContent}
+                            //value={this.state.content}
+                            onChange={this.handleChange}
+                            modules={this.modules}
+                            formats={this.formats}
+                        />
+                            <input type="text" className="form-control my-3" id="tags"
+                                   placeholder="Enter tags separated by a comma : ','" aria-describedby="tagsHelp"
+                                   onChange={e => this.handleBlogChange("tags", e.target.value)}/>
+
+                        <button className="btn btn-success" type="submit">
+                            Publish
+                        </button>
+                    </form>
+                </div>
+                <div className="col-md-6 border border-secondary preview">
+                    <Interweave content={this.state.blog.content}/>
+                </div>
+            </div>
         );
     }
 }

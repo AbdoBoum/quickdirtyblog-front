@@ -1,6 +1,5 @@
 import React from 'react';
 import "./style.css";
-import 'bootstrap/dist/css/bootstrap.min.css';
 import Interweave from 'interweave';
 import {Link} from "react-router-dom";
 

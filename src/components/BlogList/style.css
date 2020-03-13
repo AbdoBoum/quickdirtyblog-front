@@ -80,11 +80,6 @@ a:hover {
     color: #868e96;
 }
 
-@media (min-width: 20rem) {
-    .tags {
-        float: center;
-    }
-}
 
 @media (min-width: 40rem) {
     .tags {
@@ -99,4 +94,13 @@ a:hover {
 
 .add-blog {
     float: right;
+}
+
+.preview {
+    background: #f5f2f0;
+    tab-size: 4;
+}
+
+.ql-editor {
+    tab-size: 4;
 }
