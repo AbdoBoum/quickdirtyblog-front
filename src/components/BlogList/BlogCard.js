@@ -20,6 +20,9 @@ class BlogCard extends React.Component {
                                         {blog.title}
                                     </Link>
                                 </h4>
+                                <Link to={`/blog/edit/${blog.id}`} className="edit-button">
+                                    Edit
+                                </Link>
                                 <div className="post-meta">
                                     <div className="post-meta m-2">
                                         By {blog.author.name} |

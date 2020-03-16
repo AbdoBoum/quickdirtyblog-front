@@ -23,7 +23,7 @@ class AppNavbar extends React.Component{
                 <Nav className="ml-auto" navbar>
                     <NavItem>
                         <NavLink
-                            href="#">@oktadev</NavLink>
+                            href="#">Tweeter</NavLink>
                     </NavItem>
                     <NavItem>
                         <NavLink href="#">GitHub</NavLink>

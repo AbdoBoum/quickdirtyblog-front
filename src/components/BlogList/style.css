@@ -104,3 +104,16 @@ a:hover {
 .ql-editor {
     tab-size: 4;
 }
+
+.edit-button {
+    position: absolute;
+    top: 5%;
+    right: 5%;
+    font-size: 90%;
+    text-decoration: none;
+}
+
+.form-group {
+    display: flex;
+    justify-content: flex-start;
+}
