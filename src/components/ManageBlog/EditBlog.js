@@ -1,32 +1,46 @@
 import React from "react";
 import "react-quill/dist/quill.snow.css";
+import {instanceOf} from 'prop-types';
+import {Cookies, withCookies} from 'react-cookie';
 
 import "../BlogList/style.css";
 import ManageBlogForm from "./ManageBlogForm";
+import {withRouter} from "react-router-dom";
 
 class EditBlog extends React.Component {
 
+    static propTypes = {
+        cookies: instanceOf(Cookies).isRequired
+    };
 
     oldBlog = {
         title: "",
         date: "",
         content: "",
         tags: "",
-        author: "Abderrahim BOUMAHDI"
+        author: ""
     };
 
     constructor(props) {
         super(props);
+        const {cookies} = props;
         this.state = {
-            blog: this.oldBlog
+            blog: this.oldBlog,
+            csrfToken: cookies.get('XSRF-TOKEN')
         };
         this.handleChange = this.handleChange.bind(this);
         this.saveToDB = this.saveToDB.bind(this);
     }
 
-    async componentWillMount() {
-        const blog = await (await fetch(`http://localhost:8080/api/blog/${this.props.match.params.id}`)).json();
-        this.setState({blog});
+    async componentDidMount() {
+        try {
+            const blog = await (await fetch(`http://localhost:8080/api/blog/${this.props.match.params.id}`,
+                {credentials: 'include'})).json();
+            this.setState({blog});
+        } catch (e) {
+            this.props.history.push('/');
+        }
+
     }
 
     handleChange(value, delta, source, editor) {
@@ -38,14 +52,16 @@ class EditBlog extends React.Component {
 
     saveToDB = async event => {
         event.preventDefault();
+        const {blog, csrfToken} = this.state;
         await fetch(`http://localhost:8080/api/blog/${this.props.match.params.id}`, {
             method: 'PUT',
             headers: {
+                'X-XSRF-TOKEN': csrfToken,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json; charset=UTF-8'
             },
-
-            body: JSON.stringify(this.state.blog),
+            body: JSON.stringify(blog),
+            credentials: 'include'
         }).then(response => response.json())
             .then(data => console.log(data))
             .catch(err => console.log(err));
@@ -53,10 +69,14 @@ class EditBlog extends React.Component {
         this.props.history.push("/blogs");
     };
 
-    handleBlogChange = (property, value) => {
+    handleBlogChange = (event) => {
         let blog = {...this.state.blog};
-        blog[property] = value;
+        blog[event.target.name] = event.target.value;
         this.setState({blog});
+    };
+
+    cancelSubmit = () => {
+        this.props.history.push("/blogs")
     };
 
     getDate = () => {
@@ -71,10 +91,12 @@ class EditBlog extends React.Component {
 
     render() {
         return (
-            <ManageBlogForm blog={this.state.blog} handleChange={this.handleChange} handleBlogChange={this.handleBlogChange}
+            <ManageBlogForm blog={this.state.blog} handleChange={this.handleChange}
+                            handleBlogChange={this.handleBlogChange}
+                            cancel={this.cancelSubmit}
                             saveToDB={this.saveToDB}/>
         );
     }
 }
 
-export default EditBlog;
+export default withCookies(withRouter(EditBlog));

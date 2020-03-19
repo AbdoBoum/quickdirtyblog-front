@@ -2,6 +2,8 @@ import React from 'react';
 import Pagination from "react-js-pagination";
 import {Link} from 'react-router-dom';
 import {Button} from 'reactstrap';
+import { withCookies, Cookies } from 'react-cookie';
+import { instanceOf } from 'prop-types';
 
 import BlogCard from './BlogCard'
 import AppNavbar from '../AppNavbar';
@@ -9,10 +11,16 @@ import AppNavbar from '../AppNavbar';
 
 class BlogsList extends React.Component {
 
+    static propTypes = {
+        cookies: instanceOf(Cookies).isRequired
+    };
+
     constructor(props) {
         super(props);
+        const {cookies} = props;
         this.state = {
             blogList: [],
+            csrfToken: cookies.get('XSRF-TOKEN'),
             isLoading: true,
             activePage: 1,
             totalPages: null,
@@ -29,7 +37,7 @@ class BlogsList extends React.Component {
     async fetchURL(page) {
         this.setState({isLoading: true});
         this.setState({activePage: page + 1});
-        await fetch(`http://localhost:8080/api/blogs?page=${page}&size=5`)
+        await fetch(`http://localhost:8080/api/blogs?page=${page}&size=5`, {credentials: 'include'})
             .then(response => response.json())
             .then(data => {
 
@@ -45,17 +53,18 @@ class BlogsList extends React.Component {
                     });
 
                 }
-            );
+            ).catch(() => this.props.history.push('/'));
     }
-
 
     async remove(id) {
         await fetch(`http://localhost:8080/api/blog/${id}`, {
             method: 'DELETE',
             headers: {
+                'X-XSRF-TOKEN': this.state.csrfToken,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
-            }
+            },
+            credentials: 'include'
         }).then(() => {
             let updatedGroups = [...this.state.blogList].filter(blog => blog.id !== id);
             this.setState({blogList: updatedGroups});
@@ -108,4 +117,4 @@ class BlogsList extends React.Component {
     }
 }
 
-export default BlogsList;
+export default withCookies(BlogsList);

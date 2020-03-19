@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import React, {Component} from 'react';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import {CookiesProvider} from 'react-cookie';
 
 import Home from "./Home";
 import BlogDetail from "./BlogDetail/BlogDetail";
@@ -11,6 +12,7 @@ class App extends Component {
 
     render() {
         return (
+            <CookiesProvider>
             <Router>
                 <Switch>
                     <Route path='/' exact={true} component={Home}/>
@@ -20,6 +22,7 @@ class App extends Component {
                     <Route exact path="/blog/:id" component={BlogDetail}/>
                 </Switch>
             </Router>
+            </CookiesProvider>
         );
     }
 }
