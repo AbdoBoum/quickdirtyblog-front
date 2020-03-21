@@ -1,5 +1,5 @@
 import React from 'react';
-import { Collapse, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
+import {Button, Collapse, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink} from 'reactstrap';
 import { Link } from 'react-router-dom';
 
 class AppNavbar extends React.Component{
@@ -16,18 +16,23 @@ class AppNavbar extends React.Component{
     }
 
     render() {
+
+        const login = !this.props.isAuthenticated ?
+            <Button onClick={this.props.login}>
+                login
+            </Button>
+            :
+            <Button onClick={this.props.logout}>
+                Logout
+            </Button>;
+
+
         return <Navbar color="dark" dark expand="md">
             <NavbarBrand tag={Link} to="/">QuickDirtyBlog</NavbarBrand>
             <NavbarToggler onClick={this.toggle}/>
             <Collapse isOpen={this.state.isOpen} navbar>
                 <Nav className="ml-auto" navbar>
-                    <NavItem>
-                        <NavLink
-                            href="#">Tweeter</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink href="#">GitHub</NavLink>
-                    </NavItem>
+                    {login}
                 </Nav>
             </Collapse>
         </Navbar>;

@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom';
 
 import './style.css';
 
-class BlogCard extends React.Component {
+class BlogCardAdmin extends React.Component {
 
     render() {
         const {blog} = this.props;
         const tags = blog.tags ? blog.tags.split(",") : [];
 
         return(
-            <div className="card pt-3 pl-3 mb-3">
+            <div className={`card pt-3 pl-3 mb-3 ${blog.draft ? 'border border-danger': ''}`}>
                 <div className="row">
                     <div className="col" id="main">
                         <div className="media listing-box">
@@ -46,4 +46,4 @@ class BlogCard extends React.Component {
     }
 }
 
-export default BlogCard;
+export default BlogCardAdmin;

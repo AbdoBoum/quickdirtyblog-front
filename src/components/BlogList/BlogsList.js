@@ -5,7 +5,7 @@ import {Button} from 'reactstrap';
 import { withCookies, Cookies } from 'react-cookie';
 import { instanceOf } from 'prop-types';
 
-import BlogCard from './BlogCard'
+import BlogCardAdmin from './BlogCardAdmin'
 import AppNavbar from '../AppNavbar';
 
 
@@ -85,12 +85,12 @@ class BlogsList extends React.Component {
         }
 
         const groupList = blogList.map(blog => {
-            return <BlogCard key={blog.id} blog={blog}/>
+            return <BlogCardAdmin key={blog.id} blog={blog}/>
         });
 
         return (
             <div>
-                <AppNavbar/>
+                <AppNavbar isAuthenticated={true}/>
                 <div className="m-5 add-blog">
                     <Button color="success" tag={Link} to="/blog/new">New Blog</Button>
                 </div>

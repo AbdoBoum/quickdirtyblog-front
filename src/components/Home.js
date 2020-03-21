@@ -62,7 +62,7 @@ class Home extends Component {
 
         return (
             <div>
-                <AppNavbar/>
+                <AppNavbar logout={this.logout} login={this.login} isAuthenticated={this.state.isAuthenticated}/>
                 <Container fluid>
                     {message}
                     {button}

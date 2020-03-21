@@ -18,7 +18,8 @@ class AddBlog extends React.Component {
         date: "",
         content: "<h2><strong>This is a title</strong></h2><p class=\"ql-align-justify\">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p><p class=\"ql-align-justify\"><br></p>",
         tags: "",
-        author: ""
+        author: "",
+        draft: true
     };
 
     constructor(props) {
@@ -53,7 +54,7 @@ class AddBlog extends React.Component {
         console.log(editor.getContents());
     }
 
-    saveToDB = async event => {
+    saveDraft = async event => {
         event.preventDefault();
         const {blog, csrfToken} = this.state;
         await fetch('http://localhost:8080/api/blog', {
@@ -68,6 +69,12 @@ class AddBlog extends React.Component {
         });
         console.log(JSON.stringify(blog));
         this.props.history.push("/blogs");
+    };
+
+    saveToDB = async event => {
+        let blog = {...this.state.blog};
+        blog["draft"] = false;
+        this.saveDraft(event);
     };
 
     getDate = () => {
@@ -96,7 +103,8 @@ class AddBlog extends React.Component {
             <ManageBlogForm handleChange={this.handleChange}
                             handleBlogChange={this.handleBlogChange}
                             cancel={this.cancelSubmit}
-                            blog={this.state.blog} saveToDB={this.saveToDB}/>
+                            blog={this.state.blog} saveToDB={this.saveToDB}
+            draft={this.saveDraft}/>
         );
     }
 

@@ -18,7 +18,8 @@ class EditBlog extends React.Component {
         date: "",
         content: "",
         tags: "",
-        author: ""
+        author: "",
+        draft: true
     };
 
     constructor(props) {
@@ -50,7 +51,7 @@ class EditBlog extends React.Component {
         this.setState({blog});
     }
 
-    saveToDB = async event => {
+    saveDraft = async  event => {
         event.preventDefault();
         const {blog, csrfToken} = this.state;
         await fetch(`http://localhost:8080/api/blog/${this.props.match.params.id}`, {
@@ -67,6 +68,13 @@ class EditBlog extends React.Component {
             .catch(err => console.log(err));
 
         this.props.history.push("/blogs");
+
+    };
+
+    saveToDB = async event => {
+        let blog = {...this.state.blog};
+        blog["draft"] = false;
+        this.saveDraft(event);
     };
 
     handleBlogChange = (event) => {
@@ -94,7 +102,8 @@ class EditBlog extends React.Component {
             <ManageBlogForm blog={this.state.blog} handleChange={this.handleChange}
                             handleBlogChange={this.handleBlogChange}
                             cancel={this.cancelSubmit}
-                            saveToDB={this.saveToDB}/>
+                            saveToDB={this.saveToDB}
+                            draft={this.saveDraft}/>
         );
     }
 }
