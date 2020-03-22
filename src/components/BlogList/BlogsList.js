@@ -7,6 +7,7 @@ import { instanceOf } from 'prop-types';
 
 import BlogCardAdmin from './BlogCardAdmin'
 import AppNavbar from '../AppNavbar';
+import Spinner from "../utils/Spinner";
 
 
 class BlogsList extends React.Component {
@@ -81,7 +82,7 @@ class BlogsList extends React.Component {
         const {blogList, isLoading} = this.state;
 
         if (isLoading) {
-            return <p>Loading...</p>;
+            return <Spinner />;
         }
 
         const groupList = blogList.map(blog => {
@@ -90,7 +91,6 @@ class BlogsList extends React.Component {
 
         return (
             <div>
-                <AppNavbar isAuthenticated={true}/>
                 <div className="m-5 add-blog">
                     <Button color="success" tag={Link} to="/blog/new">New Blog</Button>
                 </div>

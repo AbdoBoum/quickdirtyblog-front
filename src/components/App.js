@@ -7,6 +7,7 @@ import BlogDetail from "./BlogDetail/BlogDetail";
 import BlogsList from "./BlogList/BlogsList";
 import AddBlog from "./ManageBlog/AddBlog";
 import EditBlog from "./ManageBlog/EditBlog";
+import AppNavbar from "./AppNavbar";
 
 class App extends Component {
 
@@ -14,6 +15,8 @@ class App extends Component {
         return (
             <CookiesProvider>
             <Router>
+                <React.Fragment>
+                    <AppNavbar/>
                 <Switch>
                     <Route path='/' exact={true} component={Home}/>
                     <Route path='/blogs' exact={true} component={BlogsList}/>
@@ -21,6 +24,7 @@ class App extends Component {
                     <Route path='/blog/edit/:id' exact={true} component={EditBlog}/>
                     <Route exact path="/blog/:id" component={BlogDetail}/>
                 </Switch>
+                </React.Fragment>
             </Router>
             </CookiesProvider>
         );

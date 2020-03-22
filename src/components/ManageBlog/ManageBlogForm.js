@@ -4,7 +4,6 @@ import "react-quill/dist/quill.snow.css";
 import Interweave from 'interweave';
 
 import "../BlogList/style.css";
-import AppNavbar from "../AppNavbar";
 
 class ManageBlogForm extends React.Component {
 
@@ -41,8 +40,6 @@ class ManageBlogForm extends React.Component {
 
     render() {
         return (
-            <React.Fragment>
-                <AppNavbar isAuthenticated={true}/>
                 <div className="m-5 row">
                     <div className="col-md-6">
                         <form onSubmit={this.props.saveToDB}
@@ -86,7 +83,6 @@ class ManageBlogForm extends React.Component {
                         <Interweave content={this.props.blog.content}/>
                     </div>
                 </div>
-            </React.Fragment>
         );
     }
 }

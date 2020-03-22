@@ -1,28 +1,68 @@
 import React from 'react';
 import {Button, Collapse, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink} from 'reactstrap';
 import { Link } from 'react-router-dom';
+import {withCookies} from "react-cookie";
 
 class AppNavbar extends React.Component{
+
+    state = {
+        isOpen: false,
+        isLoading: true,
+        isAuthenticated: false,
+        author: undefined
+    };
+
+
     constructor(props) {
         super(props);
-        this.state = {isOpen: false};
+        const {cookies} = props;
+        this.state.csrfToken = cookies.get('XSRF-TOKEN');
+        this.login = this.login.bind(this);
+        this.logout = this.logout.bind(this);
         this.toggle = this.toggle.bind(this);
+    }
+
+    async componentDidMount() {
+        const response = await fetch('http://localhost:8080/api/user', {credentials: 'include'});
+        const body = await response.text();
+        if (body === '') {
+            this.setState(({isAuthenticated: false}))
+        } else {
+            this.setState({isAuthenticated: true, author: JSON.parse(body)})
+        }
+    }
+
+    login() {
+        let port = (window.location.port ? ':' + window.location.port : '');
+        if (port === ':3000') {
+            port = ':8080';
+        }
+        window.location.href = '//' + window.location.hostname + port + '/private';
+    }
+
+    logout() {
+        fetch('http://localhost:8080/api/logout', {method: 'POST', credentials: 'include',
+            headers: {'X-XSRF-TOKEN': this.state.csrfToken}}).then(res => res.json())
+            .then(response => {
+                window.location.href = response.logoutUrl + "?id_token_hint=" +
+                    response.idToken + "&post_logout_redirect_uri=" + window.location.origin;
+            });
     }
 
     toggle() {
         this.setState({
-            isOpen: !this.state.isOpen
+            isOpen: !this.state.isOpen,
         });
     }
 
     render() {
 
-        const login = !this.props.isAuthenticated ?
-            <Button onClick={this.props.login}>
+        const login = !this.state.isAuthenticated ?
+            <Button onClick={this.login}>
                 login
             </Button>
             :
-            <Button onClick={this.props.logout}>
+            <Button onClick={this.logout}>
                 Logout
             </Button>;
 
@@ -39,4 +79,4 @@ class AppNavbar extends React.Component{
     }
 }
 
-export default AppNavbar;
+export default withCookies(AppNavbar);

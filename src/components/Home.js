@@ -1,13 +1,12 @@
-import React, { Component } from 'react';
-import AppNavbar from './AppNavbar';
-import { Link } from 'react-router-dom';
-import { Button, Container } from 'reactstrap';
+import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
+import {Button, Container} from 'reactstrap';
 import {withCookies} from "react-cookie";
+import "./style.css";
 
 class Home extends Component {
 
     state = {
-        isLoading: true,
         isAuthenticated: false,
         author: undefined
     };
@@ -28,6 +27,7 @@ class Home extends Component {
         } else {
             this.setState({isAuthenticated: true, author: JSON.parse(body)})
         }
+
     }
 
     login() {
@@ -39,8 +39,10 @@ class Home extends Component {
     }
 
     logout() {
-        fetch('http://localhost:8080/api/logout', {method: 'POST', credentials: 'include',
-            headers: {'X-XSRF-TOKEN': this.state.csrfToken}}).then(res => res.json())
+        fetch('http://localhost:8080/api/logout', {
+            method: 'POST', credentials: 'include',
+            headers: {'X-XSRF-TOKEN': this.state.csrfToken}
+        }).then(res => res.json())
             .then(response => {
                 window.location.href = response.logoutUrl + "?id_token_hint=" +
                     response.idToken + "&post_logout_redirect_uri=" + window.location.origin;
@@ -49,25 +51,24 @@ class Home extends Component {
 
     render() {
         const message = this.state.author ?
-            <h2>Welcome, {this.state.author.name}!</h2> :
-            <p>Please login.</p>;
+            <h2 className="mb-4 text-center">Welcome, {this.state.author.name}!</h2> :
+            <h2 className="mb-4 text-center">Please login.</h2>;
 
         const button = this.state.isAuthenticated ?
-            <div>
-                <Button color="link"><Link to="/blogs">Manage Blog List</Link></Button>
-                <br/>
-                <Button color="link" onClick={this.logout}>Logout</Button>
-            </div> :
-            <Button color="primary" onClick={this.login}>Login</Button>;
+            <div className="btn btn-outline-dark btn-lg" color="link"><Link to="/blogs">Manage Blog List</Link></div>
+            :
+            <div/>;
 
         return (
-            <div>
-                <AppNavbar logout={this.logout} login={this.login} isAuthenticated={this.state.isAuthenticated}/>
-                <Container fluid>
+            <div className="view">
+                <div className="mask rgba-black-light d-flex justify-content-center align-items-center">
+                    <div className="text-center white-text mx-5 wow fadeIn">
                     {message}
                     {button}
-                </Container>
+                    </div>
+                </div>
             </div>
+
         );
     }
 }

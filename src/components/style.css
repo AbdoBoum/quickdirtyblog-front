@@ -1,0 +1,10 @@
+.view {
+    background-image: url('https://github.com/BlackrockDigital/startbootstrap-landing-page/blob/master/img/bg-masthead.jpg?raw=true');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+}
+
+.mask {
+    height: 100%;
+}
