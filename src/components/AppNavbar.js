@@ -1,9 +1,9 @@
 import React from 'react';
-import {Button, Collapse, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink} from 'reactstrap';
-import { Link } from 'react-router-dom';
+import {Button, Collapse, Nav, Navbar, NavbarBrand, NavbarToggler} from 'reactstrap';
+import {Link} from 'react-router-dom';
 import {withCookies} from "react-cookie";
 
-class AppNavbar extends React.Component{
+class AppNavbar extends React.Component {
 
     state = {
         isOpen: false,
@@ -41,8 +41,10 @@ class AppNavbar extends React.Component{
     }
 
     logout() {
-        fetch('http://localhost:8080/api/logout', {method: 'POST', credentials: 'include',
-            headers: {'X-XSRF-TOKEN': this.state.csrfToken}}).then(res => res.json())
+        fetch('http://localhost:8080/api/logout', {
+            method: 'POST', credentials: 'include',
+            headers: {'X-XSRF-TOKEN': this.state.csrfToken}
+        }).then(res => res.json())
             .then(response => {
                 window.location.href = response.logoutUrl + "?id_token_hint=" +
                     response.idToken + "&post_logout_redirect_uri=" + window.location.origin;

@@ -29,23 +29,13 @@ class BlogDetail extends React.Component {
                 <div className="row pb-4 head">
                     <div className="col-3">
                         <Link to={`/blogs`} className="m-2">
-                            <i className="fas fa-arrow-left"/>
+                            <i className="fa fa-arrow-left"/>
                         </Link>
                     </div>
-                    <div className="col-9 text-right">
-                        <span className="brand">QuickDirtyBlog</span>
-                    </div>
                 </div>
-                <div className="content">
+                <div className="content px-5">
+                    <h1>{this.state.blog.title}</h1>
                     <Interweave content={this.state.blog.detail} />
-                </div>
-                <div className="px-5 py-4 text-center text-muted footer">
-                    Made with passion by
-                    <a href="https://www.linkedin.com/in/assalielmehdi/">El Mehdi ASSALI</a>
-                    and
-                    <a href="https://www.linkedin.com/in/abdo-boumahdi/"
-                    >Abderrahim Boumahdi</a
-                    >
                 </div>
             </div>
         );

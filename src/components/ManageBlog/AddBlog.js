@@ -1,7 +1,7 @@
 import React from "react";
 import "react-quill/dist/quill.snow.css";
-import { instanceOf } from 'prop-types';
-import { Cookies, withCookies } from 'react-cookie';
+import {instanceOf} from 'prop-types';
+import {Cookies, withCookies} from 'react-cookie';
 
 import "../BlogList/style.css";
 import ManageBlogForm from "./ManageBlogForm";
@@ -38,12 +38,12 @@ class AddBlog extends React.Component {
     componentDidMount() {
         fetch("http://localhost:8080/api/user", {credentials: 'include'})
             .then(response => response.json())
-            .then(user =>  {
-                const blog = {...this.state.blog};
-                blog["author"] = user.name;
-                this.setState({blog});
-            }
-         );
+            .then(user => {
+                    const blog = {...this.state.blog};
+                    blog["author"] = user.name;
+                    this.setState({blog});
+                }
+            );
     }
 
     handleChange(value, delta, source, editor) {
@@ -72,9 +72,23 @@ class AddBlog extends React.Component {
     };
 
     saveToDB = async event => {
+        event.preventDefault();
         let blog = {...this.state.blog};
         blog["draft"] = false;
-        this.saveDraft(event);
+        this.setState({blog});
+        const {csrfToken} = this.state;
+
+        await fetch('http://localhost:8080/api/blog', {
+            method: 'POST',
+            headers: {
+                'X-XSRF-TOKEN': csrfToken,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(blog),
+            credentials: 'include'
+        });
+        this.props.history.push("/blogs");
     };
 
     getDate = () => {
@@ -103,8 +117,9 @@ class AddBlog extends React.Component {
             <ManageBlogForm handleChange={this.handleChange}
                             handleBlogChange={this.handleBlogChange}
                             cancel={this.cancelSubmit}
-                            blog={this.state.blog} saveToDB={this.saveToDB}
-            draft={this.saveDraft}/>
+                            blog={this.state.blog}
+                            saveToDB={this.saveToDB}
+                            draft={this.saveDraft}/>
         );
     }
 

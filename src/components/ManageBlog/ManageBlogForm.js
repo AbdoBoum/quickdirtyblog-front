@@ -9,8 +9,8 @@ class ManageBlogForm extends React.Component {
 
     modules = {
         toolbar: [
-            [{header: [1, 2, false]}],
-            ["bold", "italic", "underline", "strike", "blockquote"],
+            [{header: [2, 3, false]}],
+            ["bold", "italic", "underline", "strike", "blockquote", "code-block", "font", "color"],
             [
                 {list: "ordered"},
                 {list: "bullet"},
@@ -35,7 +35,10 @@ class ManageBlogForm extends React.Component {
         "indent",
         "link",
         "image",
-        "align"
+        "align",
+        "code-block",
+        "font",
+        "color",
     ];
 
     render() {

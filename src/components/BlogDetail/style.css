@@ -44,18 +44,9 @@ img + br + em {
     margin-top: 10px;
 }
 
-.footer {
-    font-size: 16px;
-}
-
-.footer a {
-    color: #10549d;
-}
-
-.footer a:hover {
-    color: #10549d;
-    text-decoration: none;
-    opacity: 0.8;
+.blockquote{
+    background-color: #ed6891;
+    padding: 3px;
 }
 
 .container {

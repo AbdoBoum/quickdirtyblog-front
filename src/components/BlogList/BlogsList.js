@@ -2,11 +2,10 @@ import React from 'react';
 import Pagination from "react-js-pagination";
 import {Link} from 'react-router-dom';
 import {Button} from 'reactstrap';
-import { withCookies, Cookies } from 'react-cookie';
-import { instanceOf } from 'prop-types';
+import {Cookies, withCookies} from 'react-cookie';
+import {instanceOf} from 'prop-types';
 
 import BlogCardAdmin from './BlogCardAdmin'
-import AppNavbar from '../AppNavbar';
 import Spinner from "../utils/Spinner";
 
 

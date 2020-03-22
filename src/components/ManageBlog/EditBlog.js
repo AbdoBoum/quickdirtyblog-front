@@ -51,7 +51,7 @@ class EditBlog extends React.Component {
         this.setState({blog});
     }
 
-    saveDraft = async  event => {
+    saveDraft = async event => {
         event.preventDefault();
         const {blog, csrfToken} = this.state;
         await fetch(`http://localhost:8080/api/blog/${this.props.match.params.id}`, {
@@ -72,10 +72,25 @@ class EditBlog extends React.Component {
     };
 
     saveToDB = async event => {
+        event.preventDefault();
         let blog = {...this.state.blog};
         blog["draft"] = false;
-        this.saveDraft(event);
+        this.setState({blog});
+        const {csrfToken} = this.state;
+
+        await fetch(`http://localhost:8080/api/blog/${this.props.match.params.id}`, {
+            method: 'PUT',
+            headers: {
+                'X-XSRF-TOKEN': csrfToken,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(blog),
+            credentials: 'include'
+        });
+        this.props.history.push("/blogs");
     };
+
 
     handleBlogChange = (event) => {
         let blog = {...this.state.blog};
