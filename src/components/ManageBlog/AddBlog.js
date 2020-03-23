@@ -68,7 +68,7 @@ class AddBlog extends React.Component {
             credentials: 'include'
         });
         console.log(JSON.stringify(blog));
-        this.props.history.push("/blogs");
+        this.props.history.push("/admin/blogs");
     };
 
     saveToDB = async event => {
@@ -88,7 +88,7 @@ class AddBlog extends React.Component {
             body: JSON.stringify(blog),
             credentials: 'include'
         });
-        this.props.history.push("/blogs");
+        this.props.history.push("/admin/blogs");
     };
 
     getDate = () => {
@@ -109,7 +109,7 @@ class AddBlog extends React.Component {
     };
 
     cancelSubmit = () => {
-        this.props.history.push("/blogs")
+        this.props.history.push("/admin/blogs")
     };
 
     render() {

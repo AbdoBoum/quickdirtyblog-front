@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import './style.css';
 
-class BlogCardAdmin extends React.Component {
+class BlogCard extends React.Component {
 
     render() {
         const {blog} = this.props;
@@ -20,9 +20,6 @@ class BlogCardAdmin extends React.Component {
                                         {blog.title}
                                     </Link>
                                 </h4>
-                                <Link to={`/admin/blog/edit/${blog.id}`} className="edit-button">
-                                    Edit
-                                </Link>
                                 <div className="post-meta">
                                     <div className="post-meta m-2">
                                         By {blog.author.name} |
@@ -31,7 +28,7 @@ class BlogCardAdmin extends React.Component {
                                         >
                                         <div className="tags mr-2">
                                             {tags.map(tag => {
-                                                return <span className="badge badge-pill badge-secondary">{tag.trim()}</span>
+                                                return <span className="badge badge-pill badge-light">{tag.trim()}</span>
                                             })}
                                         </div>
                                     </div>
@@ -46,4 +43,4 @@ class BlogCardAdmin extends React.Component {
     }
 }
 
-export default BlogCardAdmin;
+export default BlogCard;

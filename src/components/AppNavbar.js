@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button, Collapse, Nav, Navbar, NavbarBrand, NavbarToggler} from 'reactstrap';
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import {withCookies} from "react-cookie";
 
 class AppNavbar extends React.Component {
@@ -70,15 +70,16 @@ class AppNavbar extends React.Component {
 
 
         return <Navbar color="dark" dark expand="md">
-            <NavbarBrand tag={Link} to="/">QuickDirtyBlog</NavbarBrand>
+            <NavbarBrand tag={Link}
+                         to={this.props.location.pathname.includes("/admin") ? '/admin' : '/'}>QuickDirtyBlog</NavbarBrand>
             <NavbarToggler onClick={this.toggle}/>
             <Collapse isOpen={this.state.isOpen} navbar>
                 <Nav className="ml-auto" navbar>
-                    {login}
+                    {this.props.location.pathname.includes("/admin") ? login : ''}
                 </Nav>
             </Collapse>
         </Navbar>;
     }
 }
 
-export default withCookies(AppNavbar);
+export default withCookies(withRouter(AppNavbar));

@@ -1,7 +1,7 @@
 import React from 'react';
 import "./style.css";
 import Interweave from 'interweave';
-import {Link} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 
 class BlogDetail extends React.Component {
 
@@ -10,8 +10,8 @@ class BlogDetail extends React.Component {
         detail: ""
     } ;
 
-    state = {blog: this.defaultBlog}
-    componentDidMount() {
+    state = {blog: this.defaultBlog, isAuthenticated: false};
+    async componentDidMount() {
         const blogId = this.props.match.params.id;
         fetch(`http://localhost:8080/api/blog/${blogId}`)
             .then(response => response.json())
@@ -21,6 +21,13 @@ class BlogDetail extends React.Component {
                 this.defaultBlog["detail"] = data.content;
                 this.setState({blog: this.defaultBlog})
             });
+        const response = await fetch('http://localhost:8080/api/user', {credentials: 'include'});
+        const body = await response.text();
+        if (body === '') {
+            this.setState(({isAuthenticated: false}))
+        } else {
+            this.setState({isAuthenticated: true})
+        }
     }
 
     render() {
@@ -28,7 +35,7 @@ class BlogDetail extends React.Component {
             <div className="container pt-5">
                 <div className="row pb-4 head">
                     <div className="col-3">
-                        <Link to={`/blogs`} className="m-2">
+                        <Link to={this.state.isAuthenticated ? `/admin/blogs` : '/'} className="m-2">
                             <i className="fa fa-arrow-left"/>
                         </Link>
                     </div>
@@ -42,4 +49,4 @@ class BlogDetail extends React.Component {
     }
 }
 
-export default BlogDetail;
+export default withRouter(BlogDetail);

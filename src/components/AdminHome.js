@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import {withCookies} from "react-cookie";
 import "./style.css";
 
-class Home extends Component {
+class AdminHome extends Component {
 
     state = {
         isAuthenticated: false,
@@ -54,7 +54,7 @@ class Home extends Component {
             <h2 className="mb-4 text-center">Please login.</h2>;
 
         const button = this.state.isAuthenticated ?
-            <div className="btn btn-outline-dark btn-lg" color="link"><Link to="/blogs">Manage Blog List</Link></div>
+            <div className="btn btn-outline-dark btn-lg" color="link"><Link to="/admin/blogs">Manage Blog List</Link></div>
             :
             <div/>;
 
@@ -72,4 +72,4 @@ class Home extends Component {
     }
 }
 
-export default withCookies(Home);
+export default withCookies(AdminHome);

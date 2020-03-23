@@ -39,7 +39,7 @@ class EditBlog extends React.Component {
                 {credentials: 'include'})).json();
             this.setState({blog});
         } catch (e) {
-            this.props.history.push('/');
+            this.props.history.push('/admin');
         }
 
     }
@@ -67,7 +67,7 @@ class EditBlog extends React.Component {
             .then(data => console.log(data))
             .catch(err => console.log(err));
 
-        this.props.history.push("/blogs");
+        this.props.history.push("/admin/blogs");
 
     };
 
@@ -88,7 +88,7 @@ class EditBlog extends React.Component {
             body: JSON.stringify(blog),
             credentials: 'include'
         });
-        this.props.history.push("/blogs");
+        this.props.history.push("/admin/blogs");
     };
 
 
@@ -99,7 +99,7 @@ class EditBlog extends React.Component {
     };
 
     cancelSubmit = () => {
-        this.props.history.push("/blogs")
+        this.props.history.push("/admin/blogs")
     };
 
     getDate = () => {

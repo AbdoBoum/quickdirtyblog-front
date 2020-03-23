@@ -1,12 +1,13 @@
 import React from 'react';
 import Pagination from "react-js-pagination";
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import {Button} from 'reactstrap';
 import {Cookies, withCookies} from 'react-cookie';
 import {instanceOf} from 'prop-types';
 
 import BlogCardAdmin from './BlogCardAdmin'
 import Spinner from "../utils/Spinner";
+import BlogCard from "./BlogCardUser";
 
 
 class BlogsList extends React.Component {
@@ -31,13 +32,14 @@ class BlogsList extends React.Component {
     }
 
     componentDidMount() {
-        this.fetchURL(this.state.activePage -  1);
+        this.fetchURL(this.state.activePage - 1);
     }
 
     async fetchURL(page) {
         this.setState({isLoading: true});
+        const url = this.props.location.pathname.includes("/admin") ? "http://localhost:8080/api/blogs" : "http://localhost:8080/api/blogs/published";
         this.setState({activePage: page + 1});
-        await fetch(`http://localhost:8080/api/blogs?page=${page}&size=5`, {credentials: 'include'})
+        await fetch(`${url}?page=${page}&size=5`, {credentials: 'include'})
             .then(response => response.json())
             .then(data => {
 
@@ -56,6 +58,7 @@ class BlogsList extends React.Component {
             ).catch(() => this.props.history.push('/'));
     }
 
+
     async remove(id) {
         await fetch(`http://localhost:8080/api/blog/${id}`, {
             method: 'DELETE',
@@ -71,8 +74,8 @@ class BlogsList extends React.Component {
         });
     }
 
-     handlePageChange = pageNumber => {
-        console.log(`active page is ${this.state.activePage}`);
+
+    handlePageChange = pageNumber => {
         this.fetchURL(pageNumber - 1);
     };
 
@@ -81,18 +84,21 @@ class BlogsList extends React.Component {
         const {blogList, isLoading} = this.state;
 
         if (isLoading) {
-            return <Spinner />;
+            return <Spinner/>;
         }
 
         const groupList = blogList.map(blog => {
-            return <BlogCardAdmin key={blog.id} blog={blog}/>
+            return this.props.location.pathname.includes("/admin") ? <BlogCardAdmin key={blog.id} blog={blog}/> :
+                <BlogCard key={blog.id} blog={blog}/>
         });
 
         return (
             <div>
-                <div className="m-5 add-blog">
-                    <Button color="success" tag={Link} to="/blog/new">New Blog</Button>
-                </div>
+                {this.props.location.pathname.includes("/admin") ?
+                    <div className="m-5 add-blog">
+                        <Button color="success" tag={Link} to="/admin/blog/new">New Blog</Button>
+                    </div>:''
+                }
 
                 <div className="container p-5">
                     {groupList}
@@ -116,4 +122,4 @@ class BlogsList extends React.Component {
     }
 }
 
-export default withCookies(BlogsList);
+export default withCookies(withRouter(BlogsList));
