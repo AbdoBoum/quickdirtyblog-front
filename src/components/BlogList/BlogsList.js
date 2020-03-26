@@ -93,7 +93,7 @@ class BlogsList extends React.Component {
         });
 
         return (
-            <div>
+            <div className="body light">
                 {this.props.location.pathname.includes("/admin") ?
                     <div className="m-5 add-blog">
                         <Button color="success" tag={Link} to="/admin/blog/new">New Blog</Button>
